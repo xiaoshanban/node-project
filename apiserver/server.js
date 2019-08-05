@@ -20,6 +20,7 @@ server.use(experss.static("./public"));
 // 前端 ajax 跨域设置
 server.use((req, res, next) => {
   res.set("Access-Control-Allow-Origin", "*");
+  res.set("Access-Control-Allow-Headers", "accesstoken");
   next();
 });
 

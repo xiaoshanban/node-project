@@ -4,6 +4,7 @@
 
 // 1. 引包
 const express = require("express");
+const auth = require("../middlewares/auth");
 
 // 路由器
 const router = express.Router();
@@ -17,7 +18,7 @@ const StudentModel = require("../models/student");
  * 学生查询
  * GET /api/student
  */
-router.get("/student", async (req, res) => {
+router.get("/student", auth, async (req, res) => {
   // 获取前端传递过来的参数
   let pageNum = parseInt(req.query.pageNum) || 1;
   let pageSize = parseInt(req.query.pageSize) || 5;

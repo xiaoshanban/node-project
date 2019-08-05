@@ -3,8 +3,18 @@
  */
 const express = require("express");
 const bcryptjs = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const multer = require("multer");
 const router = express.Router();
 const UserModel = require("../models/user");
+const auth = require("../middlewares/auth");
+const fs = require("fs");
+const path = require("path");
+
+// 文件上传临时路径
+const upload = multer({
+  dest: "C:/tmp"
+});
 
 /**
  * 注册
@@ -63,14 +73,23 @@ router.post("/sign-in", async (req, res) => {
   if (data) {
     // 说明存在，校验密码
     if (bcryptjs.compareSync(password, data.password)) {
-      // 密码正确
+      // 密码正确，生成一个令牌
+      const token = jwt.sign(
+        {
+          userId: data._id
+        },
+        "MY_GOD"
+      );
       res.send({
         code: 0,
         msg: "登录成功",
         data: {
-          userId: data._id,
-          username: data.username,
-          avatar: data.avatar
+          userInfo: {
+            userId: data._id,
+            username: data.username,
+            avatar: data.avatar
+          },
+          token: token
         }
       });
     } else {
@@ -87,6 +106,38 @@ router.post("/sign-in", async (req, res) => {
       msg: "用户名错误"
     });
   }
+});
+
+/**
+ * 修改头像
+ * POST /api/user/update
+ */
+router.post("/user/update", auth, upload.single("avatar"), (req, res) => {
+  // 设置新文件名
+  let newFileName = new Date().getTime() + "_" + req.file.originalname;
+  // 设置新路径
+  let newFilePath = path.resolve(__dirname, "../public", newFileName);
+  // 读文件
+  let data = fs.readFileSync(req.file.path);
+  // 写入新路径
+  fs.writeFileSync(newFilePath, data);
+
+  // 文件操作完，还需要将当前用户的数据库给修改了，但需要当前用户的 id
+  // 只需要，让这个接口 经过 auth 中间件的处理。 处理之后，就可使用 req.userInfo.userId
+  UserModel.updateOne(
+    {
+      _id: req.userInfo.userId
+    },
+    {
+      avatar: `http://localhost:3000/${newFileName}`
+    }
+  ).then(() => {
+    res.send({
+      code: 0,
+      msg: "修改成功",
+      data: `http://localhost:3000/${newFileName}`
+    });
+  });
 });
 
 // 暴露 router

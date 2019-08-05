@@ -1,0 +1,100 @@
+<!-- 个人中心页面
+  修改头像
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>xx-后台管理系统</title>
+    <link rel="stylesheet/less" href="./css/reset.less" />
+    <link rel="stylesheet/less" href="./css/common.less" />
+    <link
+      rel="stylesheet"
+      href="//at.alicdn.com/t/font_1110021_bv6rtxt80dt.css"
+    />
+
+    <style>
+      .avatar-box {
+        position: relative;
+        width: 200px;
+        height: 200px;
+        border: 1px solid #000;
+        border-radius: 5px;
+      }
+
+      .avatar-box input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: pointer;
+      }
+
+      .avatar-box > div {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="lv-header">
+      <div class="lv-header-left">
+        <a href="/" class="logo"><h1>骚猪 - 我的天，你真帅</h1></a>
+      </div>
+      <div class="lv-header-right">
+        <div class="btn"><i class="iconfont icon-setting"></i></div>
+        <div class="btn"><i class="iconfont icon-edit"></i></div>
+        <div id="userInfo" class="user">
+          <img class="avator" src="./images/avator.png" alt="" />
+          <span class="nickname">Admin</span>
+          <i class="iconfont icon-down"></i>
+        </div>
+      </div>
+    </header>
+
+    <div class="lv-main">
+      <div class="lv-menu">
+        <ul>
+          <li class="lv-menu-item ">
+            <a href="/index.html">
+              <i class="iconfont icon-home"></i>
+              <span class="lv-menu-item__title">学生管理</span>
+            </a>
+          </li>
+          <li class="lv-menu-item active">
+            <a href="/center.html">
+              <i class="iconfont icon-team"></i>
+              <span class="lv-menu-item__title">个人中心</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="lv-body">
+        <!--  -->
+        <div class="avatar-box">
+          <div>+</div>
+          <input id="myFile" type="file" />
+        </div>
+
+        <button id="myBtn">修改头像</button>
+      </div>
+    </div>
+
+    <script src="./lib/jquery.min.js"></script>
+    <script src="./lib/less.min.js"></script>
+    <script src="./js/common.js"></script>
+    <script src="./js/center.js"></script>
+  </body>
+</html>
